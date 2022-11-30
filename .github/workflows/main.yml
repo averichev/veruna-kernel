@@ -3,7 +3,7 @@ name: Release Crate
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   lint_and_test:
