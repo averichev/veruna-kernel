@@ -1,19 +1,45 @@
-name: Semantic Release
+name: Release Crate
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  semantic_release:
-    name: Semantic release
+  lint_and_test:
+    name: Testing
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Execute Semantic Release
-        id: semantic
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: arduino/setup-protoc@v1
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
+
+  package_and_publish:
+    name: Package and Publish
+    needs:
+      - lint_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: arduino/setup-protoc@v1
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
+        with:
+          extra_plugins: |
+            semantic-release-cargo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
