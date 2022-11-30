@@ -1,0 +1,14 @@
+// .releaserc.json example
+{
+  "plugins": [
+    [
+      "semantic-release-cargo",
+      {
+        "allFeatures": true,
+        "check": true,
+        "checkArgs": ["--no-deps"],
+        "publishArgs": ["--no-verify"]
+      }
+    ]
+  ]
+}
