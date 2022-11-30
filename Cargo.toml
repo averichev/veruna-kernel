@@ -1,6 +1,6 @@
 [package]
 name = "veruna-kernel"
-version = "0.1.1"
+version = "1.0.0"
 edition = "2021"
 description = "Kernel for Veruna project"
 license = "MIT OR Apache-2.0"
