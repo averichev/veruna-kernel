@@ -1,4 +1,4 @@
-mod site;
+pub mod site;
 
 use crate::sites::site::{Site, SiteId};
 
