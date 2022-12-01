@@ -9,4 +9,4 @@ keywords = ["veruna", "kernel"]
 repository = "https://github.com/averichev/veruna-kernel"
 
 [dependencies]
-url = "2.3.1"
+url = { version = "2.3.1" }
