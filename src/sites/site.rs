@@ -1,4 +1,5 @@
 use url::Url;
+use crate::pages::page::PageId;
 
 pub struct Site {
     url: Url,
@@ -7,4 +8,8 @@ pub struct Site {
 
 pub struct SiteId {
     value: u8,
+}
+
+pub struct SitePages{
+    pages: Vec<PageId>
 }
