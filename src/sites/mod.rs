@@ -15,6 +15,7 @@ pub trait SiteIdBuilder {
 
 pub trait SiteRepository {
     fn create(site: Site) -> SiteId;
+    fn read(site_id: SiteId) -> Site;
     fn delete(site_id: SiteId) -> bool;
 }
 
