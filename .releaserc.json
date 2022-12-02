@@ -46,6 +46,12 @@
       }
     ],
     [
+      "@semantic-release/git",
+      {
+        "message": "chore(release): ${nextRelease.version}"
+      }
+    ],
+    [
       "@semantic-release/github",
       {
         "assets": [
@@ -53,12 +59,6 @@
             "path": "target/package/*.crate"
           }
         ]
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "message": "chore(release): ${nextRelease.version}"
       }
     ]
   ]
