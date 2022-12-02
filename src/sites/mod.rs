@@ -1,5 +1,5 @@
 use url::Url;
-use crate::pages::page::PageId;
+use crate::pages::PageId;
 
 
 pub struct Site {
