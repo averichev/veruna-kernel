@@ -1,5 +1,5 @@
 use crate::pages::page::{Page, PageId};
-use crate::sites::site::SiteId;
+use crate::sites::SiteId;
 
 pub mod page;
 
