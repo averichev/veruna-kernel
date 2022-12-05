@@ -1,8 +1,18 @@
+mod site_kit;
+
 use url::Url;
 use crate::pages::PageId;
 
+pub trait SiteRepository {
+    fn create(&self, site: Site) -> SiteId;
+    fn read(&self, read_by: SiteReadOption) -> (Site, SiteId);
+    fn delete(&self, site_id: SiteId) -> bool;
+}
+
+
+
 pub trait SiteKit {
-    fn get_site(url: Url) -> (Site, SiteId);
+    fn get_site(&self, url: Url) -> (Site, SiteId);
 }
 
 pub trait SiteIdBuilder {
@@ -13,14 +23,13 @@ pub trait SiteIdBuilder {
     }
 }
 
-pub trait SiteRepository {
-    fn create(site: Site) -> SiteId;
-    fn read(site_id: SiteId) -> Site;
-    fn delete(site_id: SiteId) -> bool;
+pub enum SiteReadOption {
+    SiteId(SiteId),
+    Domain(String),
 }
 
 pub struct Site {
-    url: Url,
+    domain: String,
     name: String,
 }
 
