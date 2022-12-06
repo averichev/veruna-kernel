@@ -1,17 +1,12 @@
-mod site_kit;
+pub mod site_kit;
 
-use url::Url;
 use crate::pages::PageId;
-use shaku::{Provider};
+use shaku::{module, Interface, Provider};
 
-pub trait SiteRepository {
-    fn create(&self, site: Box<dyn Site>) -> Box<dyn SiteId>;
+pub trait SiteRepository: Interface {
+    fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId>;
     fn read(&self, read_by: SiteReadOption) -> (Box<dyn Site>, Box<dyn SiteId>);
     fn delete(&self, site_id: Box<dyn Site>) -> bool;
-}
-
-pub trait SiteKit {
-    fn get_site(&self, url: Url) -> (Box<dyn Site>, Box<dyn SiteId>);
 }
 
 pub trait CreatedSite {
@@ -20,10 +15,21 @@ pub trait CreatedSite {
 }
 
 pub trait SiteIdBuilder {
-    fn build(id: u8) -> dyn SiteId;
+    fn build(&self, id: u8) -> Box<dyn SiteId>;
 }
 
-pub trait SiteBuilder {
+#[derive(Provider)]
+#[shaku(interface = SiteIdBuilder)]
+pub struct SiteIdBuilderImpl;
+
+impl SiteIdBuilder for SiteIdBuilderImpl {
+    fn build(&self, id: u8) -> Box<dyn SiteId> {
+        let result = SiteIdImpl { value: id };
+        Box::new(result)
+    }
+}
+
+pub trait SiteBuilder: Interface {
     fn build(&self) -> Box<dyn Site>;
 }
 
@@ -43,7 +49,7 @@ pub enum SiteReadOption {
     Domain(String),
 }
 
-pub trait Site {}
+pub trait Site : Interface {}
 
 struct SiteImpl {
     domain: String,
@@ -52,8 +58,27 @@ struct SiteImpl {
 
 impl Site for SiteImpl {}
 
-pub trait SiteId {}
+pub trait SiteId {
+    fn value(&self) -> u8;
+}
+
+struct SiteIdImpl {
+    value: u8,
+}
+
+impl SiteId for SiteIdImpl {
+    fn value(&self) -> u8 {
+        self.value
+    }
+}
 
 pub struct SitePages {
     pages: Vec<PageId>,
+}
+
+module! {
+    SiteModule {
+        components = [],
+        providers = [SiteIdBuilderImpl]
+    }
 }
