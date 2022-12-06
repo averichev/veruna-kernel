@@ -1,3 +1,10 @@
+## [1.1.13](https://github.com/averichev/veruna-kernel/compare/v1.1.12...v1.1.13) (2022-12-06)
+
+
+### Bug Fixes
+
+* SiteReadOption::SiteId parameter ([1294740](https://github.com/averichev/veruna-kernel/commit/129474014c1f32901c1f6f608a14e4599543e7fb))
+
 ## [1.1.12](https://github.com/averichev/veruna-kernel/compare/v1.1.11...v1.1.12) (2022-12-06)
 
 ## [1.1.11](https://github.com/averichev/veruna-kernel/compare/v1.1.10...v1.1.11) (2022-12-06)
