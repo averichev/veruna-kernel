@@ -1,7 +1,7 @@
 use crate::sites::SiteId;
 
 pub trait PageRepository {
-    fn create(page: Page, site_id: SiteId) -> PageId;
+    fn create(page: Page, site_id: dyn SiteId) -> PageId;
     fn delete(page_id: PageId) -> bool;
 }
 
@@ -17,5 +17,5 @@ pub struct PageId {
 
 pub struct PageSite {
     page: PageId,
-    site: SiteId,
+    site: dyn SiteId,
 }

@@ -7,9 +7,9 @@ pub struct SiteKit {
 }
 
 impl crate::sites::SiteKit for SiteKit {
-    fn get_site(&self, url: Url) -> (Site, SiteId) {
+    fn get_site(&self, url: Url) -> (Box<dyn Site>, Box<dyn SiteId>) {
         let domain = url.domain().unwrap().to_string();
-        let repo = self.site_repository.read(SiteReadOption::Domain(domain));
-        repo
+        let created_site = self.site_repository.read(SiteReadOption::Domain(domain));
+        created_site
     }
 }
