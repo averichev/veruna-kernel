@@ -45,7 +45,7 @@ impl SiteBuilder for SiteBuilderImpl {
 }
 
 pub enum SiteReadOption {
-    SiteId(Box<dyn Site>),
+    SiteId(Box<dyn SiteId>),
     Domain(String),
 }
 
