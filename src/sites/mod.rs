@@ -5,7 +5,7 @@ use shaku::{module, Interface, Provider};
 
 pub trait SiteRepository: Interface {
     fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId>;
-    fn read(&self, read_by: SiteReadOption) -> (Box<dyn Site>, Box<dyn SiteId>);
+    fn read(&self, read_by: SiteReadOption) -> (&Box<dyn Site>, Box<dyn SiteId>);
     fn delete(&self, site_id: Box<dyn Site>) -> bool;
 }
 
@@ -25,7 +25,8 @@ pub struct SiteIdBuilderImpl;
 impl SiteIdBuilder for SiteIdBuilderImpl {
     fn build(&self, id: u8) -> Box<dyn SiteId> {
         let result = SiteIdImpl { value: id };
-        Box::new(result)
+        let b: Box<dyn SiteId> = Box::new(result);
+        b
     }
 }
 
@@ -39,8 +40,9 @@ pub struct SiteBuilderImpl;
 
 impl SiteBuilder for SiteBuilderImpl {
     fn build(&self) -> Box<dyn Site> {
-        let result = SiteImpl { domain: "".to_string(), name: "".to_string() };
-        Box::new(result)
+        let site = SiteImpl { domain: "domain.com".to_string(), name: "".to_string() };
+        let result: Box<dyn Site> = Box::new(site);
+        result
     }
 }
 
@@ -49,14 +51,20 @@ pub enum SiteReadOption {
     Domain(String),
 }
 
-pub trait Site : Interface {}
+pub trait Site: Interface {
+    fn domain(&self) -> String;
+}
 
 struct SiteImpl {
     domain: String,
     name: String,
 }
 
-impl Site for SiteImpl {}
+impl Site for SiteImpl {
+    fn domain(&self) -> String {
+        self.domain.clone()
+    }
+}
 
 pub trait SiteId {
     fn value(&self) -> u8;

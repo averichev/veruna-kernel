@@ -8,7 +8,7 @@ pub struct SiteKit {
 }
 
 impl SiteKit {
-    pub fn get_site(&self, url: Url) -> (Box<dyn Site>, Box<dyn SiteId>) {
+    pub fn get_site(&self, url: Url) -> (&Box<dyn Site>, Box<dyn SiteId>) {
         let domain = url.domain().unwrap().to_string();
         let created_site = self.site_repository.read(SiteReadOption::Domain(domain));
         created_site
