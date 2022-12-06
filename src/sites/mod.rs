@@ -87,6 +87,6 @@ pub struct SitePages {
 module! {
     SiteModule {
         components = [],
-        providers = [SiteIdBuilderImpl]
+        providers = [SiteIdBuilderImpl, SiteBuilderImpl]
     }
 }
