@@ -1,9 +1,8 @@
 pub mod site_kit;
 
 use crate::pages::PageId;
-use shaku::{module, Interface, Provider};
 
-pub trait SiteRepository: Interface {
+pub trait SiteRepository {
     fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId>;
     fn read(&self, read_by: SiteReadOption) -> (&Box<dyn Site>, Box<dyn SiteId>);
     fn delete(&self, site_id: Box<dyn Site>) -> bool;
@@ -18,9 +17,14 @@ pub trait SiteIdBuilder {
     fn build(&self, id: u8) -> Box<dyn SiteId>;
 }
 
-#[derive(Provider)]
-#[shaku(interface = SiteIdBuilder)]
 pub struct SiteIdBuilderImpl;
+
+impl SiteIdBuilderImpl {
+    pub fn new() -> Box<dyn SiteIdBuilder> {
+        let result: Box<dyn SiteIdBuilder> = Box::new(SiteIdBuilderImpl {});
+        result
+    }
+}
 
 impl SiteIdBuilder for SiteIdBuilderImpl {
     fn build(&self, id: u8) -> Box<dyn SiteId> {
@@ -30,13 +34,40 @@ impl SiteIdBuilder for SiteIdBuilderImpl {
     }
 }
 
-pub trait SiteBuilder: Interface {
+
+pub trait Reader {
+    fn read(&self, site_id: Box<dyn SiteId>) -> Box<dyn Site>;
+}
+
+pub struct SiteReader<'a> {
+    site_repository: &'a Box<dyn SiteRepository>,
+}
+
+impl SiteReader<'_> {
+    fn new(site_repository: &Box<dyn SiteRepository>) -> Box<dyn Reader + '_> {
+        Box::new(SiteReader { site_repository })
+    }
+}
+
+impl Reader for SiteReader<'_> {
+    fn read(&self, site_id: Box<dyn SiteId>) -> Box<dyn Site> {
+        todo!()
+    }
+}
+
+
+pub trait SiteBuilder {
     fn build(&self) -> Box<dyn Site>;
 }
 
-#[derive(Provider)]
-#[shaku(interface = SiteBuilder)]
 pub struct SiteBuilderImpl;
+
+impl SiteBuilderImpl {
+    fn new() -> Box<dyn SiteBuilder> {
+        let result: Box<dyn SiteBuilder> = Box::new(SiteBuilderImpl {});
+        result
+    }
+}
 
 impl SiteBuilder for SiteBuilderImpl {
     fn build(&self) -> Box<dyn Site> {
@@ -51,7 +82,7 @@ pub enum SiteReadOption {
     Domain(String),
 }
 
-pub trait Site: Interface {
+pub trait Site {
     fn domain(&self) -> String;
 }
 
@@ -82,11 +113,4 @@ impl SiteId for SiteIdImpl {
 
 pub struct SitePages {
     pages: Vec<PageId>,
-}
-
-module! {
-    SiteModule {
-        components = [],
-        providers = [SiteIdBuilderImpl, SiteBuilderImpl]
-    }
 }
