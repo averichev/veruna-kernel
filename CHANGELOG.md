@@ -1,3 +1,5 @@
+## [1.1.15](https://github.com/averichev/veruna-kernel/compare/v1.1.14...v1.1.15) (2022-12-07)
+
 ## [1.1.14](https://github.com/averichev/veruna-kernel/compare/v1.1.13...v1.1.14) (2022-12-06)
 
 ## [1.1.13](https://github.com/averichev/veruna-kernel/compare/v1.1.12...v1.1.13) (2022-12-06)
