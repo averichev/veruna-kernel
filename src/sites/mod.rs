@@ -1,9 +1,11 @@
 pub mod site_kit;
 
 use crate::pages::PageId;
+use async_trait::async_trait;
 
+#[async_trait(?Send)]
 pub trait SiteRepository {
-    fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId>;
+    async fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId>;
     fn read(&self, read_by: SiteReadOption) -> (&Box<dyn Site>, Box<dyn SiteId>);
     fn delete(&self, site_id: Box<dyn Site>) -> bool;
 }

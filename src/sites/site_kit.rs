@@ -1,8 +1,10 @@
+use async_trait::async_trait;
 use url::Url;
 use crate::sites::{Reader, Site, SiteBuilder, SiteBuilderImpl, SiteId, SiteIdBuilder, SiteIdBuilderImpl, SiteReader, SiteReadOption, SiteRepository};
 
+#[async_trait(?Send)]
 pub trait SiteKit {
-    fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId>;
+    async fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId>;
     fn get_site(&self, url: Url) -> (&Box<dyn Site>, Box<dyn SiteId>);
     fn reader(&self) -> Box<dyn Reader + '_>;
     fn site_id_builder(&self) -> Box<dyn SiteIdBuilder>;
@@ -13,9 +15,10 @@ struct SiteKitImpl {
     site_repository: Box<dyn SiteRepository>,
 }
 
+#[async_trait(?Send)]
 impl SiteKit for SiteKitImpl {
-    fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId> {
-        let result = self.site_repository.create(site);
+    async fn create(&mut self, site: Box<dyn Site>) -> Box<dyn SiteId> {
+        let result = self.site_repository.create(site).await;
         result
     }
 
